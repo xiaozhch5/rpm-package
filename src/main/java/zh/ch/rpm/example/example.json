@@ -1,4 +1,83 @@
 {
   "originalCompressFilePath": "/home/admin/example.tar.gz",
-  "targetRpmFilePath": "/home/admin/"
+  "targetRpmFilePath": "/home/admin/",
+  "map":
+          [
+            {
+              "from": "",
+              "to":"",
+              "execute": "",
+              "userName": "",
+              "groupName": ""
+            },
+            {
+              "from": "",
+              "to":"",
+              "execute": ""
+            },
+            {
+              "from": "",
+              "to":"",
+              "execute": ""
+            },
+            {
+              "from": "",
+              "to":"",
+              "execute": ""
+            }
+          ],
+  "script": {
+    "prepareScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "preinstallScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "installScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "postinstallScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "preRemoveScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "postRemoveScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "verifyScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "cleanScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "preTransScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    },
+    "postTransScriptlet":
+    {
+      "script": "",
+      "scriptFile": ""
+    }
+  }
+
+
 }
