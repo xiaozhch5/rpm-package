@@ -1,6 +1,6 @@
 package com.zh.ch.bigdata.rpm.common;
 
-import com.zh.ch.bigdata.rpm.constant.Config;
+import com.zh.ch.bigdata.rpm.constant.POMXMLConfig;
 
 /**
  * @author xzc
@@ -9,7 +9,7 @@ import com.zh.ch.bigdata.rpm.constant.Config;
  */
 public class ConfigFileAnalysisUtil {
 
-    public Config getConfig(String ConfigFilePath) {
+    public POMXMLConfig getConfig(String ConfigFilePath) {
         return null;
     }
 
