@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -32,13 +33,18 @@ public class PropertiesAnalyzeUtil {
     public static String getProperty(String propertiesFilePath, String key)
             throws IOException, ProjectException {
         Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(propertiesFilePath);
-        properties.load(inputStream);
-        String keyValue = properties.getProperty(key);
-        if (keyValue == null) {
-            throw new PropertiesFileKeyNotFoundException(key);
-        } else {
-            return keyValue;
+        try {
+            InputStream inputStream = new FileInputStream(propertiesFilePath);
+            properties.load(inputStream);
+            String keyValue = properties.getProperty(key);
+            if (keyValue == null) {
+                throw new PropertiesFileKeyNotFoundException(key);
+            } else {
+                return keyValue;
+            }
+        } catch (FileNotFoundException e) {
+            LOG.error("找不到{}配置文件,请检查该文件路径", propertiesFilePath, e);
+            throw e;
         }
     }
 
@@ -53,7 +59,6 @@ public class PropertiesAnalyzeUtil {
                 properties.setProperty(propName, getProperty(propertiesFilePath, propName));
             }
         } catch (ProjectException | IOException e) {
-            LOG.error("配置文件解析异常,配置文件 {} 中无此配置项 {}", propertiesFilePath, propName);
             throw e;
         }
         return properties;

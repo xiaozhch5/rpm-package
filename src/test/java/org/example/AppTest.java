@@ -26,7 +26,7 @@ public class AppTest
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void shouldAnswerWithTrue() throws Exception
     {
 
         try {
@@ -38,20 +38,10 @@ public class AppTest
             model.setArtifactId(properties.getProperty(POMXMLConfig.artifactId));
             model.setVersion(properties.getProperty(POMXMLConfig.version));
             model.setName(properties.getProperty(POMXMLConfig.name));
-
-            Build build = new Build();
-
-            Plugin plugin = new Plugin();
-            plugin.
-
-
-
-            build.setPlugins();
-
             Writer writer = new FileWriter("src/main/resources/template.xml");
             mavenXpp3Writer.write(writer, model);
         } catch (ProjectException | ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            throw e;
         }
 
     }
