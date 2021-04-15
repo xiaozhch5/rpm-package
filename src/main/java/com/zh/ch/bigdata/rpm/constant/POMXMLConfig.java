@@ -19,6 +19,8 @@ public class POMXMLConfig {
 
     public static final String name = "name";
 
+    public static final String projectBuildSourceEncodingProperties = "project.build.sourceEncoding";
+
     public static final String rpmPluginGroupId = "rpmPluginGroupId";
 
     public static final String rpmPluginArtifactId = "rpmPluginArtifactId";
@@ -28,5 +30,6 @@ public class POMXMLConfig {
     public static final String rpmPluginExecutionPhase = "rpmPluginExecutionPhase";
 
     public static final String rpmPluginExecutionPhaseGoal = "rpmPluginExecutionPhaseGoal";
+
 
 }

@@ -12,6 +12,8 @@ public class POMXMLConfigDefaultValue {
 
     public static final String nameDefaultValue = "rpm-package";
 
+    public static final String projectBuildSourceEncodingPropertiesDefaultValue = "UTF-8";
+
     public static final String rpmPluginGroupIdDefaultValue = "org.codehaus.mojo";
 
     public static final String rpmPluginArtifactIdDefaultValue = "rpm-maven-plugin";
@@ -21,8 +23,5 @@ public class POMXMLConfigDefaultValue {
     public static final String rpmPluginExecutionPhaseDefaultValue = "none";
 
     public static final String rpmPluginExecutionPhaseGoalDefaultValue = "rpm";
-
-
-
 
 }

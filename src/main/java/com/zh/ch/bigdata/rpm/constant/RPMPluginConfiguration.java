@@ -1,7 +1,7 @@
 package com.zh.ch.bigdata.rpm.constant;
 
 
-public class RPMConfiguration {
+public class RPMPluginConfiguration {
 
     public static String rpmConfigurationCopyright = "rpmConfigurationCopyright";
 
@@ -13,12 +13,14 @@ public class RPMConfiguration {
 
     public static String rpmConfigurationPrefix = "rpmConfigurationPrefix";
 
-    public static String rpmConfigurationRequires = "rpmConfigurationRequires";
+    public static String rpmConfigurationRequire = "rpmConfigurationRequire";
 
     public static String rpmConfigurationDirMappings = "dirMappings";
 
     public static String rpmConfigurationMappings = "mappings";
 
     public static String rpmConfigurationMapping = "mapping";
+
+    public static String rpmTargetRpmPath = "targetRpmPath";
 
 }

@@ -1,6 +1,6 @@
 package com.zh.ch.bigdata.rpm.constant;
 
-public class RPMConfigurationDefaultValue {
+public class RPMPluginConfigurationDefaultValue {
 
     public static String configuration = "configuration";
 
@@ -16,6 +16,8 @@ public class RPMConfigurationDefaultValue {
 
     public static String requires = "requires";
 
+    public static String require = "require";
+
     public static String rpmConfigurationCopyrightDefaultValue = "xiaozhch5";
 
     public static String rpmConfigurationGroupDefaultValue = "xiaozhch5";
@@ -26,6 +28,6 @@ public class RPMConfigurationDefaultValue {
 
     public static String rpmConfigurationPrefixDefaultValue = "/";
 
-    public static String rpmConfigurationRequiresDefaultValue = "no";
+    public static String rpmConfigurationRequireDefaultValue = "";
 
 }

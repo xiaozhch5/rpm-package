@@ -21,7 +21,7 @@
               "execute": ""
             }
           ],
-  "executableScriptLets": {
+
     "prepareScriptlet":
     {
       "script": "",
@@ -72,7 +72,6 @@
       "script": "",
       "scriptFile": ""
     }
-  }
 
 
 }
