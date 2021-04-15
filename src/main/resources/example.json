@@ -1,28 +1,23 @@
 {
-  "originalCompressFilePath": "/home/admin/example.tar.gz",
-  "targetRpmFilePath": "/home/admin/",
-  "DirMappings":
+  "originalPath": "/data/bigdata/rpm-package/src/main/resources/example",
+  "targetRpmPath": "/data/bigdata/rpm-package/src/main/resources",
+  "dirMappings":
           [
             {
-              "from": "",
-              "to":"",
+              "from": "/var",
+              "to":"/home/xiaozhch5/example/var",
               "execute": "",
-              "userName": "",
-              "groupName": ""
+              "userName": "root",
+              "groupName": "root"
             },
             {
-              "from": "",
-              "to":"",
+              "from": "/usr",
+              "to":"/home/xiaozhch5/example/var",
               "execute": ""
             },
             {
-              "from": "",
-              "to":"",
-              "execute": ""
-            },
-            {
-              "from": "",
-              "to":"",
+              "from": "/log",
+              "to":"/home/xiaozhch5/example/log",
               "execute": ""
             }
           ],

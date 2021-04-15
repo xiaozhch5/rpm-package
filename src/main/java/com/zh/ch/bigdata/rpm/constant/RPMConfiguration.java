@@ -15,4 +15,10 @@ public class RPMConfiguration {
 
     public static String rpmConfigurationRequires = "rpmConfigurationRequires";
 
+    public static String rpmConfigurationDirMappings = "dirMappings";
+
+    public static String rpmConfigurationMappings = "mappings";
+
+    public static String rpmConfigurationMapping = "mapping";
+
 }

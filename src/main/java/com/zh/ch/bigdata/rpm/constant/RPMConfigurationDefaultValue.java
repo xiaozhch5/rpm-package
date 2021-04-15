@@ -4,7 +4,7 @@ public class RPMConfigurationDefaultValue {
 
     public static String configuration = "configuration";
 
-    public static String copyright = "Copyright";
+    public static String copyright = "copyright";
 
     public static String group = "group";
 

@@ -11,7 +11,7 @@ public class RPMMavenModelBaseTest extends TestCase {
 
     public void testInit() throws Exception {
 
-        RPMMavenModelBase rpmMavenModelBase = new RPMMavenModelBase();
+        RPMMavenModelBase rpmMavenModelBase = new RPMMavenModelBase("src/main/resources/example.json");
         Model model = rpmMavenModelBase.init();
         MavenXpp3Writer mavenXpp3Writer = new MavenXpp3Writer();
         Writer writer = new FileWriter("src/main/resources/template1.xml");

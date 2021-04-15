@@ -1,12 +1,17 @@
 package com.zh.ch.bigdata.rpm.build;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zh.ch.bigdata.base.util.exception.ProjectException;
 import com.zh.ch.bigdata.base.util.json.JsonAnalysisUtil;
 import com.zh.ch.bigdata.base.util.properties.PropertiesAnalyzeUtil;
+import com.zh.ch.bigdata.rpm.common.RPMXpp3Dom;
 import com.zh.ch.bigdata.rpm.constant.POMXMLConfig;
 import com.zh.ch.bigdata.rpm.constant.POMXMLConfigDefaultValue;
 import com.zh.ch.bigdata.rpm.constant.RPMConfiguration;
 import com.zh.ch.bigdata.rpm.constant.RPMConfigurationDefaultValue;
+import com.zh.ch.bigdata.rpm.domain.DirMapping;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
@@ -30,11 +35,15 @@ public class RPMMavenModelBase {
 
     private Xpp3Dom rpmConfigurationDom = null;
 
+    private String mappingsFilePath = null;
 
-    public RPMMavenModelBase() {
+
+    public RPMMavenModelBase(String mappingsFilePath) {
+        this.mappingsFilePath = mappingsFilePath;
+
     }
 
-    public RPMMavenModelBase(String configBaseFilePath) {
+    public RPMMavenModelBase(String configBaseFilePath, String mappingsFilePath) {
         this.configBaseFilePath = configBaseFilePath;
     }
 
@@ -61,7 +70,7 @@ public class RPMMavenModelBase {
             pluginExecution.setGoals(new ArrayList<String>(Collections.singleton(properties.getProperty(POMXMLConfig.rpmPluginExecutionPhaseGoal, POMXMLConfigDefaultValue.rpmPluginExecutionPhaseGoalDefaultValue))));
             plugin.setExecutions(new ArrayList<PluginExecution>(Collections.singleton(pluginExecution)));
 
-            setRPMConfiguration(properties);
+            setRPMConfiguration(properties, this.mappingsFilePath);
 
             plugin.setConfiguration(rpmConfigurationDom);
 
@@ -79,7 +88,7 @@ public class RPMMavenModelBase {
 
 
 
-    public void setRPMConfiguration(Properties properties) {
+    public void setRPMConfiguration(Properties properties, String mappingsFilePath) throws ProjectException, IOException, ClassNotFoundException {
         rpmConfigurationDom = new Xpp3Dom(RPMConfigurationDefaultValue.configuration);
         Xpp3Dom copyrightDom = new Xpp3Dom(RPMConfigurationDefaultValue.copyright);
         Xpp3Dom groupDom = new Xpp3Dom(RPMConfigurationDefaultValue.group);
@@ -99,20 +108,53 @@ public class RPMMavenModelBase {
         rpmConfigurationDom.addChild(autoRequiresDom);
         rpmConfigurationDom.addChild(prefixDom);
         rpmConfigurationDom.addChild(requiresDom);
-
-
+        rpmConfigurationDom.addChild(getMappingsDom(mappingsFilePath));
     }
 
-    private Xpp3Dom getMappingsDom(String mappingsFilePath) throws IOException {
+    private RPMXpp3Dom getMappingsDom(String mappingsFilePath) throws ProjectException, IOException, ClassNotFoundException {
+
+        RPMXpp3Dom dirMappingsDom = new RPMXpp3Dom("mappings");
         try {
             File file = new File(mappingsFilePath);
             String content = FileUtils.readFileToString(file, "UTF-8");
-        } catch (IOException e) {
+
+            String originalPath = JsonAnalysisUtil.getString(content, "originalPath");
+
+            JSONArray dirMappingsJsonArray = JsonAnalysisUtil.getJsonArray(content, "dirMappings");
+            for (Object dirMappingObject : dirMappingsJsonArray) {
+                DirMapping dirMapping = (DirMapping) JSONObject.toJavaObject((JSONObject) dirMappingObject, Class.forName("com.zh.ch.bigdata.rpm.domain.DirMapping"));
+                RPMXpp3Dom dirMappingDom = new RPMXpp3Dom("mapping");
+                RPMXpp3Dom directoryDom = new RPMXpp3Dom("directory");
+                directoryDom.setValue(dirMapping.getTo());
+                RPMXpp3Dom usernameDom = new RPMXpp3Dom("username");
+                usernameDom.setValue(dirMapping.getUserName(), "root");
+                RPMXpp3Dom groupNameDom = new RPMXpp3Dom("groupname");
+                groupNameDom.setValue(dirMapping.getGroupName(), "root");
+                if (dirMapping.getDirectoryIncluded() != null) {
+                    RPMXpp3Dom directoryIncludedDom = new RPMXpp3Dom("directoryIncluded");
+                    directoryIncludedDom.setValue(dirMapping.getDirectoryIncluded());
+                    dirMappingDom.addChild(directoryIncludedDom);
+                }
+                RPMXpp3Dom sourcesDom = new RPMXpp3Dom("sources");
+                RPMXpp3Dom sourceDom = new RPMXpp3Dom("source");
+                RPMXpp3Dom locationDom = new RPMXpp3Dom("location");
+                locationDom.setValue(originalPath + dirMapping.getFrom());
+                sourceDom.addChild(locationDom);
+                sourcesDom.addChild(sourceDom);
+
+                dirMappingDom.addChild(directoryDom);
+                dirMappingDom.addChild(usernameDom);
+                dirMappingDom.addChild(groupNameDom);
+                dirMappingDom.addChild(sourcesDom);
+
+                dirMappingsDom.addChild(dirMappingDom);
+            }
+        } catch (IOException | ProjectException | ClassNotFoundException e) {
             LOG.error("mapping文件读取失败", e);
             throw e;
         }
 
-
+        return dirMappingsDom;
     }
 
 }
