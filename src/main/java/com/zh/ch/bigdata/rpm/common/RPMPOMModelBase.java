@@ -5,11 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zh.ch.bigdata.base.util.exception.ProjectException;
 import com.zh.ch.bigdata.base.util.json.JsonAnalysisUtil;
 import com.zh.ch.bigdata.base.util.properties.PropertiesAnalyzeUtil;
-import com.zh.ch.bigdata.rpm.common.RPMXpp3Dom;
-import com.zh.ch.bigdata.rpm.constant.POMXMLConfig;
-import com.zh.ch.bigdata.rpm.constant.POMXMLConfigDefaultValue;
-import com.zh.ch.bigdata.rpm.constant.RPMPluginConfiguration;
-import com.zh.ch.bigdata.rpm.constant.RPMPluginConfigurationDefaultValue;
+import com.zh.ch.bigdata.rpm.constant.*;
 import com.zh.ch.bigdata.rpm.domain.DirMapping;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.model.Build;
@@ -22,10 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class RPMPOMModelBase {
 
@@ -33,7 +26,7 @@ public class RPMPOMModelBase {
 
     private String configBaseFilePath = null;
 
-    private Xpp3Dom rpmConfigurationDom = null;
+    private Plugin rpmPlugin = null;
 
     private String mappingsFilePath = null;
 
@@ -50,42 +43,39 @@ public class RPMPOMModelBase {
         this.mappingsFilePath = mappingsFilePath;
     }
 
+    /**
+     * 获取resources文件路径
+     * @param fileName 文件名
+     * @return 文件路径
+     */
+    public String getResource(String fileName) {
+        return Objects.requireNonNull(this.getClass().getClassLoader().getResource(fileName)).toString().substring(5);
+    }
+
     public Model init() throws Exception {
 
         parseMappingsFileToString(mappingsFilePath);
 
         Model model = new Model();
         if (this.configBaseFilePath == null) {
-            this.configBaseFilePath = "src/main/resources/base-config.properties";
+            this.configBaseFilePath = getResource("base-config.properties");
         }
         try {
-            Properties properties = PropertiesAnalyzeUtil.loadProperties(this.configBaseFilePath, Class.forName("com.zh.ch.bigdata.rpm.constant.POMXMLConfig"));
-            model.setModelVersion(properties.getProperty(POMXMLConfig.modelVersion, POMXMLConfigDefaultValue.modelVersionDefaultValue));
-            model.setArtifactId(properties.getProperty(POMXMLConfig.artifactId, POMXMLConfigDefaultValue.artifactIdDefaultValue));
-            model.setGroupId(properties.getProperty(POMXMLConfig.groupId, POMXMLConfigDefaultValue.groupIdDefaultValue));
-            model.setVersion(properties.getProperty(POMXMLConfig.version, POMXMLConfigDefaultValue.versionDefaultValue));
-            model.setName(properties.getProperty(POMXMLConfig.name, POMXMLConfigDefaultValue.nameDefaultValue));
+            Properties properties = PropertiesAnalyzeUtil.loadProperties(this.configBaseFilePath, Class.forName("com.zh.ch.bigdata.rpm.constant.BaseConfigParameters"));
+            model.setModelVersion(BaseConfigParametersDefaultValue.modelVersionDefaultValue);
+            model.setArtifactId(BaseConfigParametersDefaultValue.artifactIdDefaultValue);
+            model.setGroupId(BaseConfigParametersDefaultValue.groupIdDefaultValue);
+            model.setVersion(BaseConfigParametersDefaultValue.versionDefaultValue);
+            model.setName(BaseConfigParametersDefaultValue.nameDefaultValue);
 
             Properties pomXMLProperties = new Properties();
-            pomXMLProperties.setProperty(POMXMLConfig.projectBuildSourceEncodingProperties, POMXMLConfigDefaultValue.projectBuildSourceEncodingPropertiesDefaultValue);
+            pomXMLProperties.setProperty("project.build.sourceEncoding", BaseConfigParametersDefaultValue.projectBuildSourceEncodingPropertiesDefaultValue);
             model.setProperties(pomXMLProperties);
 
-            Plugin plugin = new Plugin();
-            plugin.setGroupId(properties.getProperty(POMXMLConfig.rpmPluginGroupId, POMXMLConfigDefaultValue.rpmPluginGroupIdDefaultValue));
-            plugin.setArtifactId(properties.getProperty(POMXMLConfig.rpmPluginArtifactId, POMXMLConfigDefaultValue.rpmPluginArtifactIdDefaultValue));
-            plugin.setVersion(properties.getProperty(POMXMLConfig.rpmPluginVersion, POMXMLConfigDefaultValue.rpmPluginVersionDefaultValue));
-
-            PluginExecution pluginExecution = new PluginExecution();
-            pluginExecution.setPhase(properties.getProperty(POMXMLConfig.rpmPluginExecutionPhase, POMXMLConfigDefaultValue.rpmPluginExecutionPhaseDefaultValue));
-            pluginExecution.setGoals(new ArrayList<String>(Collections.singleton(properties.getProperty(POMXMLConfig.rpmPluginExecutionPhaseGoal, POMXMLConfigDefaultValue.rpmPluginExecutionPhaseGoalDefaultValue))));
-            plugin.setExecutions(new ArrayList<PluginExecution>(Collections.singleton(pluginExecution)));
-
-            setRPMConfiguration(properties);
-
-            plugin.setConfiguration(rpmConfigurationDom);
+            setRPMPlugin(properties);
 
             Build build = new Build();
-            build.setPlugins(new ArrayList<Plugin>(Collections.singleton(plugin)));
+            build.setPlugins(new ArrayList<Plugin>(Collections.singleton(rpmPlugin)));
 
             model.setBuild(build);
         } catch (ClassNotFoundException | IOException | ProjectException e) {
@@ -95,29 +85,51 @@ public class RPMPOMModelBase {
         return model;
     }
 
+    public void setRPMPlugin(Properties properties) throws ProjectException, ClassNotFoundException {
+        rpmPlugin = new Plugin();
+        rpmPlugin.setGroupId(BaseConfigParametersDefaultValue.rpmPluginGroupIdDefaultValue);
+        rpmPlugin.setArtifactId(BaseConfigParametersDefaultValue.rpmPluginArtifactIdDefaultValue);
+        rpmPlugin.setVersion(BaseConfigParametersDefaultValue.rpmPluginVersionDefaultValue);
+        PluginExecution pluginExecution = new PluginExecution();
+        pluginExecution.setPhase(BaseConfigParametersDefaultValue.rpmPluginExecutionPhaseDefaultValue);
+        pluginExecution.setGoals(new ArrayList<>(Collections.singleton(BaseConfigParametersDefaultValue.rpmPluginExecutionPhaseGoalDefaultValue)));
+        rpmPlugin.setExecutions(new ArrayList<>(Collections.singleton(pluginExecution)));
+        Xpp3Dom rpmConfigurationDom = setRPMPluginConfiguration(properties);
+        rpmPlugin.setConfiguration(rpmConfigurationDom);
+    }
 
-    public void setRPMConfiguration(Properties properties) throws ProjectException, IOException, ClassNotFoundException {
-        rpmConfigurationDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.configuration);
-        Xpp3Dom copyrightDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.copyright);
-        Xpp3Dom groupDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.group);
-        Xpp3Dom descriptionDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.description);
-        Xpp3Dom autoRequiresDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.autoRequires);
-        Xpp3Dom prefixDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.prefix);
+
+    public Xpp3Dom setRPMPluginConfiguration(Properties properties) throws ProjectException, ClassNotFoundException {
+        Xpp3Dom rpmConfigurationDom = new Xpp3Dom(RPMPluginParameters.CONFIGURATION);
+        Xpp3Dom nameDom = new Xpp3Dom(RPMPluginParameters.NAME);
+        Xpp3Dom versionDom = new Xpp3Dom(RPMPluginParameters.VERSION);
+        Xpp3Dom needarchDom = new Xpp3Dom(RPMPluginParameters.NEEDARCH);
+        Xpp3Dom licenseDom = new Xpp3Dom(RPMPluginParameters.LICENSE);
+        Xpp3Dom groupDom = new Xpp3Dom(RPMPluginParameters.GROUP);
+        Xpp3Dom descriptionDom = new Xpp3Dom(RPMPluginParameters.DESCRIPTION);
+        Xpp3Dom autoRequiresDom = new Xpp3Dom(RPMPluginParameters.AUTOREQUIRES);
+        Xpp3Dom prefixDom = new Xpp3Dom(RPMPluginParameters.PREFIX);
 
         if (properties.getProperty(RPMPluginConfiguration.rpmConfigurationRequire) != null) {
-            Xpp3Dom requiresDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.requires);
-            Xpp3Dom requireDom = new Xpp3Dom(RPMPluginConfigurationDefaultValue.require);
+            Xpp3Dom requiresDom = new Xpp3Dom(RPMPluginParameters.REQUIRES);
+            Xpp3Dom requireDom = new Xpp3Dom(RPMPluginParameters.REQUIRE);
             requireDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationRequire));
             requiresDom.addChild(requireDom);
             rpmConfigurationDom.addChild(requiresDom);
         }
 
-        copyrightDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationCopyright, RPMPluginConfigurationDefaultValue.rpmConfigurationCopyrightDefaultValue));
+        nameDom.setValue(properties.getProperty(BaseConfigParameters.rpmName));
+        versionDom.setValue(properties.getProperty(BaseConfigParameters.rpmVersion));
+        needarchDom.setValue(properties.getProperty(BaseConfigParameters.rpmNeedarch));
+        licenseDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationCopyright, RPMPluginConfigurationDefaultValue.rpmConfigurationCopyrightDefaultValue));
         groupDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationGroup, RPMPluginConfigurationDefaultValue.rpmConfigurationGroupDefaultValue));
         descriptionDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationDescription, RPMPluginConfigurationDefaultValue.rpmConfigurationDescriptionDefaultValue));
         autoRequiresDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationAutoRequires, RPMPluginConfigurationDefaultValue.rpmConfigurationAutoRequiresDefaultValue));
         prefixDom.setValue(properties.getProperty(RPMPluginConfiguration.rpmConfigurationPrefix, RPMPluginConfigurationDefaultValue.rpmConfigurationPrefixDefaultValue));
-        rpmConfigurationDom.addChild(copyrightDom);
+        rpmConfigurationDom.addChild(nameDom);
+        rpmConfigurationDom.addChild(versionDom);
+        rpmConfigurationDom.addChild(needarchDom);
+        rpmConfigurationDom.addChild(licenseDom);
         rpmConfigurationDom.addChild(groupDom);
         rpmConfigurationDom.addChild(descriptionDom);
         rpmConfigurationDom.addChild(autoRequiresDom);
@@ -126,6 +138,7 @@ public class RPMPOMModelBase {
         for (RPMXpp3Dom scriptletDom : getScriptletsDom()) {
             rpmConfigurationDom.addChild(scriptletDom);
         }
+        return rpmConfigurationDom;
     }
 
     private RPMXpp3Dom getMappingsDom() throws ProjectException, ClassNotFoundException {
@@ -171,8 +184,8 @@ public class RPMPOMModelBase {
 
     private List<RPMXpp3Dom> getScriptletsDom() throws ProjectException {
         List<RPMXpp3Dom> rpmXpp3DomList = new ArrayList<>();
-        String[] scriptletTypes = {"prepareScriptlet", "preinstallScriptlet", "installScriptlet", "postinstallScriptlet", "preRemoveScriptlet",
-                "postRemoveScriptlet", "verifyScriptlet", "cleanScriptlet", "preTransScriptlet", "postTransScriptlet"};
+        String[] scriptletTypes = {"prepareScriptlet", "preinstallScriptlet", "installScriptlet", "postinstallScriptlet", "preremoveScriptlet",
+                "postremoveScriptlet", "verifyScriptlet", "cleanScriptlet", "pretransScriptlet", "posttransScriptlet"};
 
         for (String scriptletType : scriptletTypes) {
             if (JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType) != null) {

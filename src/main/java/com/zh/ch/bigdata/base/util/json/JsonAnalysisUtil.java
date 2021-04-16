@@ -173,7 +173,7 @@ public class JsonAnalysisUtil {
     public static JSONObject getJsonObject(String jsonData, String key) throws ProjectException {
         JSONObject jsonObject = parseJsonObject(jsonData);
         if (jsonObject.getJSONObject(key) == null) {
-            throw new JsonKeyNotFoundException(key);
+            return null;
         } else {
             return jsonObject.getJSONObject(key);
         }

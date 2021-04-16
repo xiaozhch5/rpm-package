@@ -23,6 +23,7 @@
     <commonshttpclient.version>3.0</commonshttpclient.version>
     <commons.lang3.version>3.11</commons.lang3.version>
     <reflections.version>0.9.10</reflections.version>
+    <assemblydescriptor>src/main/assembly/all.xml</assemblydescriptor>
   </properties>
 
   <dependencies>
@@ -145,13 +146,32 @@
         <executions>
           <execution>
             <id>copy-dependencies</id>
-            <phase>package</phase>
+            <phase>compile</phase>
             <goals>
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>${assemblydescriptor}</descriptor>
+          </descriptors>
+          <tarLongFileMode>gnu</tarLongFileMode>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
