@@ -4,7 +4,7 @@ public class BaseConfigParametersDefaultValue {
 
     public static final String  modelVersionDefaultValue = "4.0.0";
 
-    public static final String groupIdDefaultValue = "com.iwhalecloud";
+    public static final String groupIdDefaultValue = "com.zh.ch.bigdata.rpm";
 
     public static final String artifactIdDefaultValue =  "rpm-package";
 

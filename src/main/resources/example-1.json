@@ -1,4 +1,8 @@
 {
+  "rpmName": "test",
+  "rpmVersion": "1.0",
+  "rpmNeedarch": "x86_64",
+  "require": "python",
   "originalPath": "/data/bigdata/rpm-package/src/main/resources/example",
   "targetRpmPath": "/data/bigdata/rpm-package/src/main/resources",
   "dirMappings":
@@ -6,19 +10,14 @@
     {
       "from": "/var",
       "to":"/home/xiaozhch5/example/var",
-      "execute": "",
-      "userName": "root",
-      "groupName": "root"
     },
     {
       "from": "/usr",
       "to":"/home/xiaozhch5/example/var",
-      "execute": ""
     },
     {
       "from": "/log",
       "to":"/home/xiaozhch5/example/log",
-      "execute": ""
     }
   ]
 }

@@ -6,7 +6,7 @@ public class RPMPOMModel extends RPMPOMModelBase{
         super(mappingsFilePath);
     }
 
-    public RPMPOMModel(String configBaseFilePath, String mappingsFilePath) {
-        super(configBaseFilePath, mappingsFilePath);
+    public RPMPOMModel() {
+        super();
     }
 }

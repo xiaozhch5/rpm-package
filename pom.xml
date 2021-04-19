@@ -17,7 +17,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <lombok.version>1.18.12</lombok.version>
-    <fastjson.version>1.2.70</fastjson.version>
+    <fastjson.version>1.2.71</fastjson.version>
     <sl4j.version>1.7.25</sl4j.version>
     <jcraft.version>0.1.54</jcraft.version>
     <commonshttpclient.version>3.0</commonshttpclient.version>
@@ -143,6 +143,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.2</version>
         <executions>
           <execution>
             <id>copy-dependencies</id>
@@ -159,6 +160,7 @@
 
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
         <configuration>
           <descriptors>
             <descriptor>${assemblydescriptor}</descriptor>

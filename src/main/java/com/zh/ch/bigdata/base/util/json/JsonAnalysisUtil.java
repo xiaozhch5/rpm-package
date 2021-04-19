@@ -41,7 +41,7 @@ public class JsonAnalysisUtil {
     public static String getString(String jsonData, String key) throws ProjectException {
         JSONObject jsonObject = parseJsonObject(jsonData);
         if (jsonObject.getString(key) == null) {
-            throw new JsonKeyNotFoundException(key);
+            return null;
         } else {
             return jsonObject.getString(key);
         }

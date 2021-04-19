@@ -2,6 +2,23 @@ package com.zh.ch.bigdata.rpm.constant;
 
 public class RPMPluginParameters {
 
+    public static String RPMNAME = "rpmName";
+
+    public static String RPMVERSION = "rpmVersion";
+
+    public static String RPMNEEDARCH = "rpmNeedarch";
+
+    public static String ORIGINALPATH = "originalPath";
+
+    public static String TARGETRPMPATH = "targetRpmPath";
+
+    public static String MAPPINGS = "mappings";
+
+    public static String DIRMAPPINGS = "dirMappings";
+
+    public static String MAPPING = "mapping";
+
+
     public static String PLUGINGROUPID = "groupId";
 
     public static String PLUGINARTIFACTID = "artifactId";
@@ -70,6 +87,8 @@ public class RPMPluginParameters {
 
     public static String SOURCES ="sources";
 
+    public static String SOURCE ="source";
+
     public static String USERNAME = "username";
 
     public static String LOCATION = "location";
@@ -87,6 +106,11 @@ public class RPMPluginParameters {
     public static String RELOCATION = "relocation";
 
     public static String SCRIPTS = "scripts";
+
+    public static String SCRIPTFILE = "scriptFile";
+
+    public static String FILEENCODING = "fileEncoding";
+
 
     public static String TRIGGERS = "triggers";
 

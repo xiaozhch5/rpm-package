@@ -2,7 +2,7 @@ package com.zh.ch.bigdata.rpm.build;
 
 import com.zh.ch.bigdata.base.util.json.JsonAnalysisUtil;
 import com.zh.ch.bigdata.rpm.common.RPMPOMModel;
-import com.zh.ch.bigdata.rpm.constant.MappingsFileConstants;
+import com.zh.ch.bigdata.rpm.constant.RPMPluginParameters;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
@@ -24,7 +24,6 @@ public class BuildRPM {
 
         List<String> argsList = Arrays.asList(args);
         String mappingsFilePath;
-        String baseConfigFilePath = null;
 
         if (argsList.contains("--mappingsFilePath")) {
             mappingsFilePath = argsList.get(argsList.indexOf("--mappingsFilePath") + 1);
@@ -32,28 +31,21 @@ public class BuildRPM {
         else {
             throw new Exception("请输入映射文件路径参数, --mappingsFilePath xxx");
         }
-        if (argsList.contains("--baseConfigFilePath")) {
-            baseConfigFilePath = argsList.get(argsList.indexOf("--baseConfigFilePath") + 1);
-        }
 
         File file = new File(mappingsFilePath);
         String content = FileUtils.readFileToString(file, "UTF-8");
 
-        RPMPOMModel rpmpomModel;
-
-        if (baseConfigFilePath == null) {
-            rpmpomModel = new RPMPOMModel(mappingsFilePath);
-        }
-        else {
-            rpmpomModel = new RPMPOMModel(baseConfigFilePath, mappingsFilePath);
-        }
-
+        RPMPOMModel rpmpomModel = new RPMPOMModel(mappingsFilePath);
         Model model = rpmpomModel.init();
         MavenXpp3Writer mavenXpp3Writer = new MavenXpp3Writer();
-        String targetRpmPath = JsonAnalysisUtil.getString(content, MappingsFileConstants.targetRpmPath);
+        String targetRpmPath = JsonAnalysisUtil.getString(content, RPMPluginParameters.TARGETRPMPATH);
+        String rpmName = JsonAnalysisUtil.getString(content, RPMPluginParameters.RPMNAME);
+        String rpmVersion = JsonAnalysisUtil.getString(content, RPMPluginParameters.RPMVERSION);
 
         long currentTimeMillis = System.currentTimeMillis();
-        File directory = new File(targetRpmPath + "/" + "rpm-package-" + currentTimeMillis);
+        File directory = new File(targetRpmPath + "/" + rpmName + "-" + rpmVersion + "-" + currentTimeMillis);
+
+
         if (directory.mkdirs()) {
             Writer writer = new FileWriter(directory + "/" + "pom.xml");
             mavenXpp3Writer.write(writer, model);
