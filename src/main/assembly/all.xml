@@ -9,7 +9,7 @@
        <fileSet>
            <fileMode>755</fileMode>
            <directory>src/main/bin</directory>
-           <outputDirectory>/rpm-package/bin</outputDirectory>
+           <outputDirectory>/rpm-package</outputDirectory>
        </fileSet>
        <fileSet>
            <fileMode>755</fileMode>

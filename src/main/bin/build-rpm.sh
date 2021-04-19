@@ -22,4 +22,4 @@ if [[ -z $mappingsFilePath ]]; then
   exit
 fi
 
-java -cp ../lib/rpm-package-1.0-SNAPSHOT.jar:../lib/* com.zh.ch.bigdata.rpm.build.BuildRPM --mappingsFilePath "${mappingsFilePath}"
+java -cp ./lib/rpm-package-1.0-SNAPSHOT.jar:./lib/* com.zh.ch.bigdata.rpm.build.BuildRPM --mappingsFilePath "${mappingsFilePath}"
