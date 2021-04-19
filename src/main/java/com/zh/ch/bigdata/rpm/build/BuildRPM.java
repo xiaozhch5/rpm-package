@@ -43,8 +43,7 @@ public class BuildRPM {
         String rpmVersion = JsonAnalysisUtil.getString(content, RPMPluginParameters.RPMVERSION);
 
         long currentTimeMillis = System.currentTimeMillis();
-        File directory = new File(targetRpmPath + "/" + rpmName + "-" + rpmVersion + "-" + currentTimeMillis);
-
+        File directory = new File(targetRpmPath + "/" + rpmName + "-" + rpmVersion);
 
         if (directory.mkdirs()) {
             Writer writer = new FileWriter(directory + "/" + "pom.xml");
