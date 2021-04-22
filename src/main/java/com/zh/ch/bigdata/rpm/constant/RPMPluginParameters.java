@@ -105,7 +105,7 @@ public class RPMPluginParameters {
 
     public static String RELOCATION = "relocation";
 
-    public static String SCRIPTS = "scripts";
+    public static String SCRIPT = "script";
 
     public static String SCRIPTFILE = "scriptFile";
 

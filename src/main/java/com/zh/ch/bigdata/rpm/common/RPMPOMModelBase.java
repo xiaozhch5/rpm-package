@@ -131,6 +131,13 @@ public class RPMPOMModelBase {
                 RPMXpp3Dom dirMappingDom = new RPMXpp3Dom(RPMPluginParameters.MAPPING);
                 RPMXpp3Dom directoryDom = new RPMXpp3Dom(RPMPluginParameters.DIRECTORY);
                 directoryDom.setValue(dirMapping.getTo());
+
+                if (dirMapping.getFilemode() != null) {
+                    RPMXpp3Dom filemodeDom = new RPMXpp3Dom(RPMPluginParameters.FILEMODE);
+                    filemodeDom.setValue(dirMapping.getFilemode());
+                    dirMappingDom.addChild(filemodeDom);
+                }
+
                 RPMXpp3Dom usernameDom = new RPMXpp3Dom(RPMPluginParameters.USERNAME);
                 usernameDom.setValue(dirMapping.getUserName(), RPMPluginParametersDefaultValue.USERNAMEDEFAULTVALUE);
                 RPMXpp3Dom groupNameDom = new RPMXpp3Dom(RPMPluginParameters.GROUPNAME);
@@ -183,13 +190,20 @@ public class RPMPOMModelBase {
 
     private RPMXpp3Dom getScriptLetDom(String scriptletType) throws ProjectException {
         RPMXpp3Dom scriptletDom = new RPMXpp3Dom(scriptletType);
-        RPMXpp3Dom scriptFileDom = new RPMXpp3Dom(RPMPluginParameters.SCRIPTFILE);
-        scriptFileDom.setValue(Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType)).getString(RPMPluginParameters.SCRIPTFILE));
-        RPMXpp3Dom fileEncodingDom = new RPMXpp3Dom(RPMPluginParameters.FILEENCODING);
-        String fileEncoding = Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType)).getString(RPMPluginParameters.SCRIPTFILE);
-        fileEncodingDom.setValue(fileEncoding == null ? RPMPluginParametersDefaultValue.FILEENCODINGDEFAULTVALUE : fileEncoding);
-        scriptletDom.addChild(scriptFileDom);
-        scriptletDom.addChild(fileEncodingDom);
+        if ((Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType))).getString(RPMPluginParameters.SCRIPTFILE) != null) {
+            RPMXpp3Dom scriptFileDom = new RPMXpp3Dom(RPMPluginParameters.SCRIPTFILE);
+            scriptFileDom.setValue(Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType)).getString(RPMPluginParameters.SCRIPTFILE));
+            RPMXpp3Dom fileEncodingDom = new RPMXpp3Dom(RPMPluginParameters.FILEENCODING);
+            String fileEncoding = Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType)).getString(RPMPluginParameters.FILEENCODING);
+            fileEncodingDom.setValue(fileEncoding == null ? RPMPluginParametersDefaultValue.FILEENCODINGDEFAULTVALUE : fileEncoding);
+            scriptletDom.addChild(scriptFileDom);
+            scriptletDom.addChild(fileEncodingDom);
+        }
+        if (Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType)).getString(RPMPluginParameters.SCRIPT) != null) {
+            RPMXpp3Dom scriptDom = new RPMXpp3Dom(RPMPluginParameters.SCRIPT);
+            scriptDom.setValue(Objects.requireNonNull(JsonAnalysisUtil.getJsonObject(mappingsString, scriptletType)).getString(RPMPluginParameters.SCRIPT));
+            scriptletDom.addChild(scriptDom);
+        }
         return scriptletDom;
     }
 

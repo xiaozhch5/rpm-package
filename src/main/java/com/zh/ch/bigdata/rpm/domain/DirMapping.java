@@ -13,6 +13,8 @@ public class DirMapping {
 
     private String execute;
 
+    private String filemode;
+
     private String userName;
 
     private String groupName;
@@ -29,6 +31,10 @@ public class DirMapping {
 
     public void setExecute(String execute) {
         this.execute = execute;
+    }
+
+    public void setFilemode(String filemode) {
+        this.filemode = filemode;
     }
 
     public void setUserName(String userName) {
@@ -65,5 +71,9 @@ public class DirMapping {
 
     public String getDirectoryIncluded() {
         return directoryIncluded;
+    }
+
+    public String getFilemode() {
+        return filemode;
     }
 }
