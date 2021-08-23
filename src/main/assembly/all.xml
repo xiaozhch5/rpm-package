@@ -1,5 +1,5 @@
 <assembly>
-    <id>dist</id>
+    <id>bin</id>
     <formats>
         <format>dir</format>
         <format>tar.gz</format>
@@ -9,12 +9,17 @@
        <fileSet>
            <fileMode>755</fileMode>
            <directory>src/main/bin</directory>
-           <outputDirectory>/rpm-package</outputDirectory>
+           <outputDirectory>/rpm-package-1.0-bin</outputDirectory>
        </fileSet>
        <fileSet>
            <fileMode>755</fileMode>
            <directory>${project.build.directory}/lib</directory>
-           <outputDirectory>/rpm-package/lib</outputDirectory>
+           <outputDirectory>/rpm-package-1.0-bin/lib</outputDirectory>
+       </fileSet>
+       <fileSet>
+           <fileMode>755</fileMode>
+           <directory>src/main/examples</directory>
+           <outputDirectory>/rpm-package-1.0-bin/examples</outputDirectory>
        </fileSet>
    </fileSets>
 
@@ -22,7 +27,7 @@
         <file>
             <fileMode>755</fileMode>
             <source>${project.build.directory}/${project.artifactId}-${project.version}.jar</source>
-            <outputDirectory>/rpm-package/lib</outputDirectory>
+            <outputDirectory>/rpm-package-1.0-bin/lib</outputDirectory>
         </file>
     </files>
 </assembly>

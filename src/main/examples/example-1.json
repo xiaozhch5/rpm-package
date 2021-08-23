@@ -1,0 +1,32 @@
+{
+  "rpmName": "test",
+  "rpmVersion": "1.0",
+  "rpmNeedarch": "x86_64",
+  "originalPath": "/root/rpm-package-1.0-bin/examples",
+  "targetRpmPath": "/root",
+  "dirMappings":
+  [
+    {
+      "from": "/var",
+      "to":"/usr/examples/var"
+    },
+    {
+      "from": "/usr",
+      "to":"/usr/examples/usr"
+    },
+    {
+      "from": "/log",
+      "to":"/usr/examples/log"
+    }
+  ],
+  "prepareScriptlet":
+  {
+    "script": "echo \"Hello World\""
+  },
+  "postinstallScriptlet":
+  {
+    "fileEncoding": "UTF-8",
+    "scriptFile": "/root/rpm-package-1.0-bin/examples/postinstall.sh"
+  }
+
+}

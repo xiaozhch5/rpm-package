@@ -22,7 +22,7 @@ if [[ -z $mappingsFilePath ]]; then
   exit
 fi
 
-java -cp ./lib/rpm-package-1.0-SNAPSHOT.jar:./lib/* com.zh.ch.bigdata.rpm.build.BuildRPM --mappingsFilePath "${mappingsFilePath}"
+java -cp ./lib/rpm-package-1.0.jar:./lib/* com.zh.ch.bigdata.rpm.build.BuildRPM --mappingsFilePath "${mappingsFilePath}"
 
 rpmName=$(cat ${mappingsFilePath} | grep rpmName | sed s/[[:space:]]//g | sed 's/\"//g')
 rpmVersion=$(cat ${mappingsFilePath} | grep rpmVersion | sed s/[[:space:]]//g | sed 's/\"//g')

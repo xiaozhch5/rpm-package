@@ -1,0 +1,82 @@
+{
+  "rpmName": "test",
+  "rpmVersion": "1.0",
+  "rpmNeedarch": "x86_64",
+  "originalPath": "/data/bigdata/rpm-package/src/main/resources/example",
+  "targetRpmPath": "/data/bigdata/rpm-package/src/main/resources",
+  "dirMappings":
+  [
+    {
+      "from": "/var",
+      "to":"/home/xiaozhch5/example/var",
+      "execute": "",
+      "filemode": "755",
+      "userName": "root",
+      "groupName": "root"
+    },
+    {
+      "from": "/usr",
+      "to":"/home/xiaozhch5/example/var",
+      "execute": ""
+    },
+    {
+      "from": "/log",
+      "to":"/home/xiaozhch5/example/log",
+      "execute": ""
+    }
+  ],
+
+  "prepareScriptlet":
+  {
+    "script": "echo \"Hello World\"",
+    "fileEncoding": "",
+    "scriptFile": ""
+  },
+  "preinstallScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "installScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "postinstallScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "preremoveScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "postremoveScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "verifyScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "cleanScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "pretransScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  },
+  "posttransScriptlet":
+  {
+    "script": "",
+    "scriptFile": ""
+  }
+
+
+}
